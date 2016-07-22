@@ -6,23 +6,29 @@ import android.util.Log;
  * 用于打印普通日志
  * Created by DevWiki on 2015/11/27 0027.
  */
-public class BaseLog implements Constant {
+class BaseLog {
 
-    public static void print(int type, String tag, String msg){
-        switch (type){
-            case VERBOSE:
+    /**
+     * 打印普通日志
+     * @param level 日志级别
+     * @param tag 日志的TAG
+     * @param msg 日志内容
+     */
+    static void print(int level, String tag, String msg){
+        switch (level){
+            case Constant.LogLevel.VERBOSE:
                 Log.v(tag, msg);
                 break;
-            case DEBUG:
+            case Constant.LogLevel.DEBUG:
                 Log.d(tag, msg);
                 break;
-            case INFO:
+            case Constant.LogLevel.INFO:
                 Log.i(tag, msg);
                 break;
-            case WARN:
+            case Constant.LogLevel.WARN:
                 Log.w(tag, msg);
                 break;
-            case ERROR:
+            case Constant.LogLevel.ERROR:
                 Log.e(tag, msg);
                 break;
             default:
