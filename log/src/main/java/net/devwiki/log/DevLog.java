@@ -1,20 +1,26 @@
 package net.devwiki.log;
 
+import android.text.TextUtils;
+import net.devwiki.log.Constant.*;
+
 /**
  * 日志类<br/>
  * 若不调用{@link DevLog#init(int, int, String)},则默认打印所有级别日志并保存{@link Constant#WARN}级别以上的日志
  * 到{@link Constant#DEFAULT_SAVE_PATH}.
  * Created by Asia on 2015/11/27 0027.
  */
-public class DevLog implements Constant {
+public class DevLog {
 
     private static String className;			//所在的类名
     private static String methodName;			//所在的方法名
     private static int lineNumber;				//所在行号
 
-    private static int logLevel = VERBOSE;
-    private static int saveLevel = WARN;
-    private static String savePath = DEFAULT_SAVE_PATH;
+    //输出日志的级别
+    private static int logLevel = LogLevel.VERBOSE;
+    //保存日志的级别
+    private static int saveLevel = LogLevel.WARN;
+    //保存文件的路径
+    private static String savePath = Constant.DEFAULT_SAVE_PATH;
 
     private DevLog(){
         //禁止实例化
@@ -29,7 +35,9 @@ public class DevLog implements Constant {
     public static void init(int logLevel, int saveLevel, String savePath){
         DevLog.logLevel = logLevel;
         DevLog.saveLevel = saveLevel;
-        DevLog.savePath = savePath;
+        if (!TextUtils.isEmpty(savePath)) {
+            DevLog.savePath = savePath;
+        }
     }
 
     /**
@@ -59,93 +67,112 @@ public class DevLog implements Constant {
     }
 
     public static void v(String msg){
-        if (logLevel <= VERBOSE ){
+        if (logLevel <= LogLevel.VERBOSE ){
             getLocationInfo(new Throwable().getStackTrace());
-            printLog(VERBOSE, className, createLog(msg));
+            printLog(LogType.BASE_LOG, LogLevel.VERBOSE, className, createLogWithoutClassName(msg));
         }
     }
 
     public static void v(String tag, String msg){
-        if (logLevel <= VERBOSE){
+        if (logLevel <= LogLevel.VERBOSE){
             getLocationInfo(new Throwable().getStackTrace());
-            printLog(VERBOSE, tag, msg);
+            if (tag == null || tag.equals(className)) {
+                printLog(LogType.BASE_LOG, LogLevel.VERBOSE, className, createLogWithoutClassName(msg));
+            } else {
+                printLog(LogType.BASE_LOG, LogLevel.VERBOSE, tag, createLogWithClassName(msg));
+            }
         }
     }
 
     public static void d(String msg){
-        if (logLevel <= DEBUG ){
+        if (logLevel <= LogLevel.DEBUG ){
             getLocationInfo(new Throwable().getStackTrace());
-            printLog(DEBUG, className, createLog(msg));
+            printLog(LogType.BASE_LOG, LogLevel.DEBUG, className, createLogWithoutClassName(msg));
         }
     }
 
     public static void d(String tag, String msg){
-        if (logLevel <= DEBUG){
+        if (logLevel <= LogLevel.DEBUG){
             getLocationInfo(new Throwable().getStackTrace());
-            printLog(DEBUG, tag, msg);
+            if (tag == null || tag.equals(className)) {
+                printLog(LogType.BASE_LOG, LogLevel.DEBUG, className, createLogWithoutClassName(msg));
+            } else {
+                printLog(LogType.BASE_LOG, LogLevel.DEBUG, tag, createLogWithClassName(msg));
+            }
         }
     }
 
     public static void i(String msg){
-        if (logLevel <= INFO ){
+        if (logLevel <= LogLevel.INFO ){
             getLocationInfo(new Throwable().getStackTrace());
-            printLog(INFO, className, createLog(msg));
+            printLog(LogType.BASE_LOG, LogLevel.INFO, className, createLogWithoutClassName(msg));
         }
     }
 
     public static void i(String tag, String msg){
-        if (logLevel <= INFO ){
+        if (logLevel <= LogLevel.INFO ){
             getLocationInfo(new Throwable().getStackTrace());
-            printLog(INFO, tag, msg);
+            if (tag == null || tag.equals(className)) {
+                printLog(LogType.BASE_LOG, LogLevel.INFO, className, createLogWithoutClassName(msg));
+            } else {
+                printLog(LogType.BASE_LOG, LogLevel.INFO, tag, createLogWithClassName(msg));
+            }
         }
     }
 
     public static void w(String msg){
-        if (logLevel <= WARN ){
+        if (logLevel <= LogLevel.WARN ){
             getLocationInfo(new Throwable().getStackTrace());
-            printLog(WARN, className, createLog(msg));
+            printLog(LogType.BASE_LOG, LogLevel.WARN, className, createLogWithoutClassName(msg));
         }
     }
 
     public static void w(String tag, String msg){
-        if (logLevel <= WARN){
+        if (logLevel <= LogLevel.WARN){
             getLocationInfo(new Throwable().getStackTrace());
-            printLog(WARN, tag, msg);
+            if (tag == null || tag.equals(className)) {
+                printLog(LogType.BASE_LOG, LogLevel.WARN, className, createLogWithoutClassName(msg));
+            } else {
+                printLog(LogType.BASE_LOG, LogLevel.WARN, tag, createLogWithClassName(msg));
+            }
         }
     }
 
     public static void e(String msg){
-        if (logLevel <= ERROR ){
+        if (logLevel <= LogLevel.ERROR ){
             getLocationInfo(new Throwable().getStackTrace());
-            printLog(ERROR, className, createLog(msg));
+            printLog(LogType.BASE_LOG, LogLevel.ERROR, className, createLogWithoutClassName(msg));
         }
     }
 
     public static void e(String tag, String msg){
-        if (logLevel <= ERROR){
+        if (logLevel <= LogLevel.ERROR){
             getLocationInfo(new Throwable().getStackTrace());
-            printLog(ERROR, tag, msg);
+            if (tag == null || tag.equals(className)) {
+                printLog(LogType.BASE_LOG, LogLevel.ERROR, className, createLogWithoutClassName(msg));
+            } else {
+                printLog(LogType.BASE_LOG, LogLevel.ERROR, tag, createLogWithClassName(msg));
+            }
         }
     }
 
-    private static void printLog(int type, String tag, String msg){
+    private static void printLog(int type, int level, String tag, String msg){
         switch (type){
-            case VERBOSE:
-            case DEBUG:
-            case INFO:
-            case WARN:
-            case ERROR:
-                BaseLog.print(type, tag, msg);
+            case LogType.BASE_LOG:
+                BaseLog.print(level, tag, msg);
                 break;
-            case JSON:
-                // TODO: 2015/11/28 0028 打印JSON
+            case LogType.JSON:
+                // TODO: 2015/11/28 打印JSON
+                break;
+            case LogType.XML:
+                // TODO: 2016/7/22 打印XML
                 break;
             default:
                 break;
         }
     }
 
-    private static String createLog(String msg) {
+    private static String createLogWithClassName(String msg) {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
         builder.append(className);
@@ -158,8 +185,23 @@ public class DevLog implements Constant {
         return builder.toString();
     }
 
+    private static String createLogWithoutClassName(String msg) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        builder.append(methodName);
+        builder.append(":");
+        builder.append(lineNumber);
+        builder.append("]");
+        builder.append(msg);
+        return builder.toString();
+    }
+
     private static void getLocationInfo(StackTraceElement[] sElements) {
         className = sElements[1].getFileName();
+        int index = className.indexOf(".");
+        if (index > -1) {
+            className = className.substring(0, index);
+        }
         methodName = sElements[1].getMethodName();
         lineNumber = sElements[1].getLineNumber();
     }

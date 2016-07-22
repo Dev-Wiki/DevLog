@@ -4,7 +4,7 @@ import android.util.Log;
 
 /**
  * 用于打印普通日志
- * Created by Asia on 2015/11/27 0027.
+ * Created by DevWiki on 2015/11/27 0027.
  */
 public class BaseLog implements Constant {
 

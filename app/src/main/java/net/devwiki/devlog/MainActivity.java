@@ -11,6 +11,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DevLog.d("test log");
+        DevLog.v("log v...");
+        DevLog.v("tag", "log v...");
+        DevLog.d("log d...");
+        DevLog.d("tag", "log d...");
+        DevLog.i("log i...");
+        DevLog.i("tag", "log i...");
+        DevLog.w("log w...");
+        DevLog.w("tag", "log w...");
+        DevLog.e("log e...");
+        DevLog.e("tag", "log e...");
     }
 }
