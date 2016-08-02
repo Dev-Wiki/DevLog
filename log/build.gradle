@@ -1,4 +1,29 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'devlog'
+
+    publishedGroupId = 'net.devwiki.log'
+    artifact = 'devlog'
+
+    libraryName = 'devlog'
+    libraryVersion = '0.0.1'
+    libraryDescription = 'Android Develop Log Util'
+
+    siteUrl = 'https://github.com/Dev-Wiki/DevLog'
+    gitUrl = 'https://github.com/Dev-Wiki/DevLog.git'
+
+    developerId = 'DevWiki'
+    developerName = 'DevWiki'
+    developerEmail = 'bozhou2010@live.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
 
 android {
     compileSdkVersion 23
