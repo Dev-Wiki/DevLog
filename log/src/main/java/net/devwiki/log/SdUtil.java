@@ -6,7 +6,7 @@ import android.os.Environment;
  * 存储卡工具
  * Created by Asia on 2015/11/29 0029.
  */
-public class SdUtil {
+class SdUtil {
 
     /**
      * 存储卡是否可用
