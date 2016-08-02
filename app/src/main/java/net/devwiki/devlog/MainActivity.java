@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import net.devwiki.log.DevLog;
-import net.devwiki.log.JsonLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
