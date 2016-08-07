@@ -3,16 +3,16 @@ package net.devwiki.log;
 import android.util.Log;
 
 /**
- * 用于打印普通日志
+ * print normal log
  * Created by DevWiki on 2015/11/27 0027.
  */
 class BaseLog {
 
     /**
-     * 打印普通日志
-     * @param level 日志级别
-     * @param tag 日志的TAG
-     * @param msg 日志内容
+     * print normal log
+     * @param level log level
+     * @param tag the tag of log
+     * @param msg the content of log
      */
     static void print(int level, String tag, String msg){
         switch (level){
