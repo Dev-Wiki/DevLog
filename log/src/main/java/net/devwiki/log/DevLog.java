@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import net.devwiki.log.Constant.*;
 
 /**
- * 日志类<br/>
+ * 日志类<br>
  * 若不调用{@link DevLog#init(int, int, String)},则默认打印所有级别日志并保存{@link LogLevel#WARN}级别以上的日志
  * 到{@link Constant#DEFAULT_SAVE_PATH}.
  * Created by DevWiki on 2015/11/27 0027.
