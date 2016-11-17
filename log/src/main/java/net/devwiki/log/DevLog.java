@@ -295,7 +295,24 @@ public class DevLog {
         }
     }
 
+    private static void printLog(int logType, int logLevel, String[] logInfo) {
+        String tag = logInfo[0];
+        String location = logInfo[1];
+        String content = logInfo[2];
+        if (logType == Constant.LogType.JSON) {
+            JsonLog.print(tag, location, content);
+        }
+        if (logType == Constant.LogType.BASE) {
+            BaseLog.print(logLevel, tag, location + content);
+        }
+    }
+
     private String[] getLogInfo() {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+
+        StackTraceElement targetElement = stackTrace[2];
+        String className = targetElement.getClassName();
+
         String[] logInfo = new String[3];
         return logInfo;
     }

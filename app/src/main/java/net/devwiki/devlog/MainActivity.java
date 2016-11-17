@@ -75,6 +75,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DevLog.d();
         DevLog.d("this is a d message!");
         DevLog.d(TAG, "this is a d message");
+
+        threadPrint();
+        Inner inner = new Inner();
+        inner.print();
+        inner.threadPrint();
     }
 
     private void printILog() {
@@ -116,5 +121,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         DevLog.json("Json");
+    }
+
+    private void threadPrint() {
+        new Thread() {
+            @Override
+            public void run() {
+                DevLog.d("MainActivity#threadPrint");
+            }
+        }.start();
+    }
+
+    private static class Inner {
+
+        public void print() {
+            DevLog.d("MainActivity.Inner#print");
+        }
+
+        public void threadPrint() {
+            new Thread() {
+                @Override
+                public void run() {
+                    DevLog.d("MainActivity.Inner#threadPrint");
+                }
+            }.start();
+        }
     }
 }

@@ -10,7 +10,7 @@ interface Constant {
     String DEFAULT_SAVE_DIR = "";
 
     String HEAD_LINE = "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
-    String START_LINE = "┃";
+    String START_LINE = "┃  ";
     String FOOT_LINE = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
 
     /**
@@ -29,5 +29,10 @@ interface Constant {
         int ERROR = 5;
         /*** 日志级别:不输出日志 */
         int NONE = 6;
+    }
+
+    interface LogType {
+        int BASE = 1;
+        int JSON = 2;
     }
 }

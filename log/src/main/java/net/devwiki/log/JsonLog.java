@@ -16,23 +16,23 @@ class JsonLog {
         JsonLog.logLevel = level;
     }
 
-    public static void print(String tag, String header, String json) {
+    public static void print(String tag, String location, String content) {
         String msg;
         try {
-            if (json.startsWith("{")) {
-                JSONObject jsonObject = new JSONObject(json);
+            if (content.startsWith("{")) {
+                JSONObject jsonObject = new JSONObject(content);
                 msg = jsonObject.toString(4);
-            } else if (json.startsWith("[")) {
-                JSONArray jsonArray = new JSONArray(json);
+            } else if (content.startsWith("[")) {
+                JSONArray jsonArray = new JSONArray(content);
                 msg = jsonArray.toString(4);
             } else {
-                msg = json;
+                msg = content;
             }
         } catch (JSONException e) {
-            msg = json;
+            msg = content;
         }
         BaseLog.print(logLevel, tag, Constant.HEAD_LINE);
-        BaseLog.print(logLevel, tag, Constant.START_LINE + "\r" + header);
+        BaseLog.print(logLevel, tag, Constant.START_LINE + "\r" + location);
         String[] msgArray = msg.split("\\n");
         for (String str : msgArray) {
             BaseLog.print(logLevel, tag,Constant.START_LINE + "\r" + str);
