@@ -1,5 +1,6 @@
 package net.devwiki.log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,18 +17,27 @@ class JsonLog {
     }
 
     public static void print(String tag, String header, String json) {
+        String msg;
         try {
-            JSONObject jsonObject = new JSONObject(json);
-            String msg = jsonObject.toString(4);
-            BaseLog.print(logLevel, tag, Constant.HEAD_LINE);
-            BaseLog.print(logLevel, tag, Constant.START_LINE + "\r" + header);
-            String[] msgs = msg.split("\\n");
-            for (String str : msgs) {
-                BaseLog.print(logLevel, tag,Constant.START_LINE + "\r" + str);
+            if (json.startsWith("{")) {
+                JSONObject jsonObject = new JSONObject(json);
+                msg = jsonObject.toString(4);
+            } else if (json.startsWith("[")) {
+                JSONArray jsonArray = new JSONArray(json);
+                msg = jsonArray.toString(4);
+            } else {
+                msg = json;
             }
-            BaseLog.print(logLevel, tag, Constant.FOOT_LINE);
         } catch (JSONException e) {
-            e.printStackTrace();
+            msg = json;
         }
+        BaseLog.print(logLevel, tag, Constant.HEAD_LINE);
+        BaseLog.print(logLevel, tag, Constant.START_LINE + "\r" + header);
+        String[] msgArray = msg.split("\\n");
+        for (String str : msgArray) {
+            BaseLog.print(logLevel, tag,Constant.START_LINE + "\r" + str);
+        }
+        BaseLog.print(logLevel, tag, Constant.FOOT_LINE);
     }
+
 }
