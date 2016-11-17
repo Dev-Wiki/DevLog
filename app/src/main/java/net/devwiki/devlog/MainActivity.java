@@ -1,7 +1,9 @@
 package net.devwiki.devlog;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import net.devwiki.log.DevLog;
 
@@ -9,26 +11,93 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = "MainActivity";
+
+    private Button mNormalVBtn;
+    private Button mNormalDBtn;
+    private Button mNormalIBtn;
+    private Button mNormalWBtn;
+    private Button mNormalEBtn;
+    private Button mJSONBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DevLog.v("log v...");
-        DevLog.v("tag", "log v...");
-        DevLog.d("log d...");
-        DevLog.d("tag", "log d...");
-        DevLog.i("log i...");
-        DevLog.i("tag", "log i...");
-        DevLog.w("log w...");
-        DevLog.w("tag", "log w...");
-        DevLog.e("log e...");
-        DevLog.e("tag", "log e...");
+        mNormalVBtn = (Button) findViewById(R.id.normal_v_btn);
+        mNormalDBtn = (Button) findViewById(R.id.normal_d_btn);
+        mNormalIBtn = (Button) findViewById(R.id.normal_i_btn);
+        mNormalWBtn = (Button) findViewById(R.id.normal_w_btn);
+        mNormalEBtn = (Button) findViewById(R.id.normal_e_btn);
+        mJSONBtn = (Button) findViewById(R.id.json_btn);
 
-        DevLog.e(new RuntimeException("exception!!!"));
-        DevLog.e("tag", new RuntimeException("exception!!!"));
+        mNormalVBtn.setOnClickListener(this);
+        mNormalDBtn.setOnClickListener(this);
+        mNormalIBtn.setOnClickListener(this);
+        mNormalWBtn.setOnClickListener(this);
+        mNormalEBtn.setOnClickListener(this);
+        mJSONBtn.setOnClickListener(this);
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.normal_v_btn:
+                printVLog();
+                break;
+            case R.id.normal_d_btn:
+                printDLog();
+                break;
+            case R.id.normal_i_btn:
+                printILog();
+                break;
+            case R.id.normal_w_btn:
+                printWLog();
+                break;
+            case R.id.normal_e_btn:
+                printELog();
+                break;
+            case R.id.json_btn:
+                printJSONLog();
+                break;
+        }
+    }
+
+    private void printVLog() {
+        DevLog.v();
+        DevLog.v("this is a v message!");
+        DevLog.v(TAG, "this is a v message");
+    }
+
+    private void printDLog() {
+        DevLog.d();
+        DevLog.d("this is a d message!");
+        DevLog.d(TAG, "this is a d message");
+    }
+
+    private void printILog() {
+        DevLog.i();
+        DevLog.i("this is a i message!");
+        DevLog.i(TAG, "this is a i message");
+    }
+
+    private void printWLog() {
+        DevLog.w();
+        DevLog.w("this is a w message!");
+        DevLog.w(TAG, "this is a w message");
+    }
+
+    private void printELog() {
+        DevLog.e();
+        DevLog.e("this is a e message!");
+        DevLog.e(TAG, "this is a e message");
+        DevLog.e(new RuntimeException("this is an exception!"));
+        DevLog.e(TAG, new RuntimeException("this is an exception!"));
+    }
+
+    private void printJSONLog() {
         try {
             JSONObject object = new JSONObject();
             object.put("name", "zhangsan");
@@ -45,5 +114,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        DevLog.json("Json");
     }
 }

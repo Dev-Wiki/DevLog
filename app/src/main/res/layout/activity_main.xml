@@ -1,15 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="net.devwiki.devlog.MainActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:orientation="vertical">
 
-</LinearLayout>
+        <Button
+            android:id="@+id/normal_v_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Normal v Log"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/normal_d_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Normal d Log"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/normal_i_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Normal i Log"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/normal_w_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Normal w Log"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/normal_e_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Normal e Log"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/json_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="JSON Log"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+</ScrollView>
