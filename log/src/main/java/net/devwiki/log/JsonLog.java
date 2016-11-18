@@ -10,7 +10,7 @@ import org.json.JSONObject;
  */
 class JsonLog {
 
-    private static int logLevel = Constant.LogLevel.DEBUG;
+    private static int logLevel = DevLog.LogLevel.DEBUG;
 
     public static void setLogLevel(int level) {
         JsonLog.logLevel = level;
@@ -31,13 +31,13 @@ class JsonLog {
         } catch (JSONException e) {
             msg = content;
         }
-        BaseLog.print(logLevel, tag, Constant.HEAD_LINE);
-        BaseLog.print(logLevel, tag, Constant.START_LINE + "\r" + location);
+        BaseLog.print(logLevel, tag, DevLog.HEAD_LINE);
+        BaseLog.print(logLevel, tag, DevLog.START_LINE + "\r" + location);
         String[] msgArray = msg.split("\\n");
         for (String str : msgArray) {
-            BaseLog.print(logLevel, tag,Constant.START_LINE + "\r" + str);
+            BaseLog.print(logLevel, tag,DevLog.START_LINE + "\r" + str);
         }
-        BaseLog.print(logLevel, tag, Constant.FOOT_LINE);
+        BaseLog.print(logLevel, tag, DevLog.FOOT_LINE);
     }
 
 }

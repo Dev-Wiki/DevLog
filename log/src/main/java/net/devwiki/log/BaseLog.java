@@ -16,19 +16,19 @@ class BaseLog {
      */
     static void print(int level, String tag, String msg){
         switch (level){
-            case Constant.LogLevel.VERBOSE:
+            case DevLog.LogLevel.VERBOSE:
                 Log.v(tag, msg);
                 break;
-            case Constant.LogLevel.DEBUG:
+            case DevLog.LogLevel.DEBUG:
                 Log.d(tag, msg);
                 break;
-            case Constant.LogLevel.INFO:
+            case DevLog.LogLevel.INFO:
                 Log.i(tag, msg);
                 break;
-            case Constant.LogLevel.WARN:
+            case DevLog.LogLevel.WARN:
                 Log.w(tag, msg);
                 break;
-            case Constant.LogLevel.ERROR:
+            case DevLog.LogLevel.ERROR:
                 Log.e(tag, msg);
                 break;
             default:

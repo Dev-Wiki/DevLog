@@ -2,8 +2,6 @@ package net.devwiki.log;
 
 import android.content.Context;
 
-import net.devwiki.log.Constant.LogLevel;
-
 /**
  * 日志类<br>
  * 若不调用{@link DevLog#init(Context, int, int, String)},则默认打印所有级别日志并不保存任何日志
@@ -11,16 +9,41 @@ import net.devwiki.log.Constant.LogLevel;
  */
 public class DevLog {
 
-    private static String className;            //所在的类名
-    private static String methodName;            //所在的方法名
-    private static int lineNumber;                //所在行号
+    public static final String DEFAULT_SAVE_PATH = "";
+    public static final String DEFAULT_SAVE_DIR = "";
+    public static final String HEAD_LINE = "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+    public static final String START_LINE = "┃  ";
+    public static final String FOOT_LINE = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+
+    /**
+     * 日志级别
+     */
+    public interface LogLevel {
+        /*** 日志级别:输出VERBOSE,DEBUG,INFO,WARN,ERROR级别日志 */
+        int VERBOSE = 1;
+        /*** 日志级别:输出DEBUG,INFO,WARN,ERROR级别日志 */
+        int DEBUG = 2;
+        /*** 日志级别:输出INFO,WARN,ERROR级别日志 */
+        int INFO = 3;
+        /*** 日志级别:输出WARN,ERROR级别日志 */
+        int WARN = 4;
+        /*** 日志级别:输出ERROR级别日志 */
+        int ERROR = 5;
+        /*** 日志级别:不输出日志 */
+        int NONE = 6;
+    }
+
+    interface LogType {
+        int BASE = 1;
+        int JSON = 2;
+    }
 
     //输出日志的级别
     private static int logLevel = LogLevel.VERBOSE;
     //保存日志的级别
     private static int saveLevel = LogLevel.NONE;
     //保存文件的路径
-    private static String savePath = Constant.DEFAULT_SAVE_PATH;
+    private static String savePath = DEFAULT_SAVE_PATH;
 
     private DevLog() {
         //禁止实例化
@@ -31,7 +54,7 @@ public class DevLog {
      *
      * @param logLevel  日志在Logcat输出的级别,参见{@link DevLog#setLogLevel(int)}
      * @param saveLevel 保存到文件的日志级别,参见{@link DevLog#setSaveLevel(int)}
-     * @param savePath  日志文件保存路径,设置为绝对路径,默认保存在{@link Constant#DEFAULT_SAVE_PATH}
+     * @param savePath  日志文件保存路径,设置为绝对路径,默认保存在{@link DevLog#DEFAULT_SAVE_PATH}
      */
     public static void init(Context context, int logLevel, int saveLevel, String savePath) {
         DevLog.logLevel = logLevel;
@@ -85,8 +108,8 @@ public class DevLog {
      */
     public static void v() {
         if (logLevel <= LogLevel.VERBOSE) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.VERBOSE, className, createLogContent(null));
+            String[] logInfo = getLogInfo(null, null);
+            printLog(LogType.BASE, LogLevel.VERBOSE, logInfo);
         }
     }
 
@@ -97,8 +120,8 @@ public class DevLog {
      */
     public static void v(String msg) {
         if (logLevel <= LogLevel.VERBOSE) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.VERBOSE, className, createLogContent(msg));
+            String[] logInfo = getLogInfo(null, msg);
+            printLog(LogType.BASE, LogLevel.VERBOSE, logInfo);
         }
     }
 
@@ -110,15 +133,15 @@ public class DevLog {
      */
     public static void v(String tag, String msg) {
         if (logLevel <= LogLevel.VERBOSE) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.VERBOSE, tag, createLogContent(msg));
+            String[] logInfo = getLogInfo(tag, msg);
+            printLog(LogType.BASE, LogLevel.VERBOSE, logInfo);
         }
     }
 
     public static void d() {
         if (logLevel <= LogLevel.DEBUG) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.DEBUG, className, createLogContent(null));
+            String[] logInfo = getLogInfo(null, null);
+            printLog(LogType.BASE, LogLevel.DEBUG, logInfo);
         }
     }
 
@@ -129,8 +152,8 @@ public class DevLog {
      */
     public static void d(String msg) {
         if (logLevel <= LogLevel.DEBUG) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.DEBUG, className, createLogContent(msg));
+            String[] logInfo = getLogInfo(null, msg);
+            printLog(LogType.BASE, LogLevel.DEBUG, logInfo);
         }
     }
 
@@ -142,15 +165,15 @@ public class DevLog {
      */
     public static void d(String tag, String msg) {
         if (logLevel <= LogLevel.DEBUG) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.DEBUG, tag, createLogContent(msg));
+            String[] logInfo = getLogInfo(tag, msg);
+            printLog(LogType.BASE, LogLevel.DEBUG, logInfo);
         }
     }
 
     public static void i() {
         if (logLevel <= LogLevel.INFO) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.INFO, className, createLogContent(null));
+            String[] logInfo = getLogInfo(null, null);
+            printLog(LogType.BASE, LogLevel.INFO, logInfo);
         }
     }
 
@@ -161,8 +184,8 @@ public class DevLog {
      */
     public static void i(String msg) {
         if (logLevel <= LogLevel.INFO) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.INFO, className, createLogContent(msg));
+            String[] logInfo = getLogInfo(null, msg);
+            printLog(LogType.BASE, LogLevel.INFO, logInfo);
         }
     }
 
@@ -174,15 +197,15 @@ public class DevLog {
      */
     public static void i(String tag, String msg) {
         if (logLevel <= LogLevel.INFO) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.INFO, tag, createLogContent(msg));
+            String[] logInfo = getLogInfo(tag, msg);
+            printLog(LogType.BASE, LogLevel.INFO, logInfo);
         }
     }
 
     public static void w() {
         if (logLevel <= LogLevel.WARN) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.WARN, className, createLogContent(null));
+            String[] logInfo = getLogInfo(null, null);
+            printLog(LogType.BASE, LogLevel.WARN, logInfo);
         }
     }
 
@@ -193,8 +216,8 @@ public class DevLog {
      */
     public static void w(String msg) {
         if (logLevel <= LogLevel.WARN) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.WARN, className, createLogContent(msg));
+            String[] logInfo = getLogInfo(null, msg);
+            printLog(LogType.BASE, LogLevel.WARN, logInfo);
         }
     }
 
@@ -206,15 +229,15 @@ public class DevLog {
      */
     public static void w(String tag, String msg) {
         if (logLevel <= LogLevel.WARN) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.WARN, tag, createLogContent(msg));
+            String[] logInfo = getLogInfo(tag, msg);
+            printLog(LogType.BASE, LogLevel.WARN, logInfo);
         }
     }
 
     public static void e() {
         if (logLevel <= LogLevel.ERROR) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.ERROR, className, createLogContent(null));
+            String[] logInfo = getLogInfo(null, null);
+            printLog(LogType.BASE, LogLevel.ERROR, logInfo);
         }
     }
 
@@ -225,8 +248,8 @@ public class DevLog {
      */
     public static void e(String msg) {
         if (logLevel <= LogLevel.ERROR) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.ERROR, className, createLogContent(msg));
+            String[] logInfo = getLogInfo(null, msg);
+            printLog(LogType.BASE, LogLevel.ERROR, logInfo);
         }
     }
 
@@ -238,8 +261,8 @@ public class DevLog {
      */
     public static void e(String tag, String msg) {
         if (logLevel <= LogLevel.ERROR) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.ERROR, tag, createLogContent(msg));
+            String[] logInfo = getLogInfo(tag, msg);
+            printLog(LogType.BASE, LogLevel.ERROR, logInfo);
         }
     }
 
@@ -250,8 +273,8 @@ public class DevLog {
      */
     public static void e(Exception e) {
         if (logLevel <= LogLevel.ERROR) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.ERROR, className, createLogContent(e.getMessage()));
+            String[] logInfo = getLogInfo(null, e.getMessage());
+            printLog(LogType.BASE, LogLevel.ERROR, logInfo);
         }
     }
 
@@ -263,8 +286,8 @@ public class DevLog {
      */
     public static void e(String tag, Exception e) {
         if (logLevel <= LogLevel.ERROR) {
-            getLocationInfo(new Throwable().getStackTrace());
-            BaseLog.print(LogLevel.ERROR, tag, createLogContent(e.getMessage()));
+            String[] logInfo = getLogInfo(tag, e.getMessage());
+            printLog(LogType.BASE, LogLevel.ERROR, logInfo);
         }
     }
 
@@ -275,9 +298,8 @@ public class DevLog {
      */
     public static void json(String json) {
         if (logLevel <= LogLevel.ERROR) {
-            getLocationInfo(new Throwable().getStackTrace());
-            String location = createLogContent("");
-            JsonLog.print(className, location, json);
+            String[] logInfo = getLogInfo(null, json);
+            printLog(LogType.JSON, LogLevel.DEBUG, logInfo);
         }
     }
 
@@ -289,9 +311,8 @@ public class DevLog {
      */
     public static void json(String tag, String json) {
         if (logLevel <= LogLevel.ERROR) {
-            getLocationInfo(new Throwable().getStackTrace());
-            String location = createLogContent("");
-            JsonLog.print(tag, location, json);
+            String[] logInfo = getLogInfo(tag, json);
+            printLog(LogType.JSON, LogLevel.DEBUG, logInfo);
         }
     }
 
@@ -299,47 +320,29 @@ public class DevLog {
         String tag = logInfo[0];
         String location = logInfo[1];
         String content = logInfo[2];
-        if (logType == Constant.LogType.JSON) {
+        if (logType == LogType.JSON) {
             JsonLog.print(tag, location, content);
         }
-        if (logType == Constant.LogType.BASE) {
+        if (logType == LogType.BASE) {
             BaseLog.print(logLevel, tag, location + content);
         }
     }
 
-    private String[] getLogInfo() {
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-
-        StackTraceElement targetElement = stackTrace[2];
+    private static String[] getLogInfo(String tag, String msg) {
+        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+        StackTraceElement targetElement = elements[4];
         String className = targetElement.getClassName();
-
+        int index = className.lastIndexOf(".");
+        if (index >= 0) {
+            className = className.substring(index + 1);
+        }
+        String methodName = targetElement.getMethodName();
+        int lineNumber = targetElement.getLineNumber();
+        String location = "[" + className + "#" + methodName + ":" + lineNumber + "]";
         String[] logInfo = new String[3];
+        logInfo[0] = tag == null ? className : tag;
+        logInfo[1] = location;
+        logInfo[2] = msg == null ? "" : msg;
         return logInfo;
-    }
-
-    private static String createLogContent(String msg) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("[");
-        builder.append(className);
-        builder.append(".java");
-        builder.append("#");
-        builder.append(methodName);
-        builder.append(":");
-        builder.append(lineNumber);
-        builder.append("]");
-        if (msg != null) {
-            builder.append(msg);
-        }
-        return builder.toString();
-    }
-
-    private static void getLocationInfo(StackTraceElement[] sElements) {
-        className = sElements[1].getFileName();
-        int index = className.indexOf(".");
-        if (index > -1) {
-            className = className.substring(0, index);
-        }
-        methodName = sElements[1].getMethodName();
-        lineNumber = sElements[1].getLineNumber();
     }
 }
