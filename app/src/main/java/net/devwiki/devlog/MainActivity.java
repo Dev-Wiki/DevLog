@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mNormalWBtn.setOnClickListener(this);
         mNormalEBtn.setOnClickListener(this);
         mJSONBtn.setOnClickListener(this);
-
-        DevLog.init(this, DevLog.LogLevel.WARN, DevLog.LogLevel.WARN, null);
     }
 
     @Override
@@ -133,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 DevLog.d("MainActivity#threadPrint");
-                KLog.d("KLog");
+                KLog.d(TAG, "KLog");
             }
         }.start();
     }
@@ -142,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         public void print() {
             DevLog.d("MainActivity.Inner#print");
-            KLog.d("KLog");
+            KLog.d(TAG, "KLog");
         }
 
         public void threadPrint() {
@@ -150,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void run() {
                     DevLog.d("MainActivity.Inner#threadPrint");
-                    KLog.d("KLog");
+                    KLog.d(TAG, "KLog");
                 }
             }.start();
         }

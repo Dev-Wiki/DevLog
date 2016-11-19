@@ -12,11 +12,11 @@ class JsonLog {
 
     private static int logLevel = DevLog.LogLevel.DEBUG;
 
-    public static void setLogLevel(int level) {
+    static void setLogLevel(int level) {
         JsonLog.logLevel = level;
     }
 
-    public static void print(String tag, String location, String content) {
+    static void print(String tag, String location, String content) {
         String msg;
         try {
             if (content.startsWith("{")) {

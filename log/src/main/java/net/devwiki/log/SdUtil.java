@@ -12,7 +12,7 @@ class SdUtil {
      * 存储卡是否可用
      * @return true:可用
      */
-    public static boolean isSDAccess(){
+    static boolean isSDAccess(){
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
@@ -20,11 +20,11 @@ class SdUtil {
      * 获取存储卡根目录
      * @return 根目录
      */
-    public static String getRootPath(){
+    static String getRootPath(){
         return Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
     }
 
-    public static long getTotalSize(){
+    static long getTotalSize(){
         if (isSDAccess()){
             return Environment.getExternalStorageDirectory().getTotalSpace();
         }

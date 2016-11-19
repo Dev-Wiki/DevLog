@@ -57,7 +57,7 @@ class LogStore {
      * @param path 文件路径
      * @return true:存在,false:不存在
      */
-    public static boolean isExists(String path) {
+     static boolean isExists(String path) {
         if (!isSDMounted()) {
             DevLog.w("sdcard is not mount!");
             return false;
@@ -75,7 +75,7 @@ class LogStore {
      * @param path 路径
      * @return true:创建成功
      */
-    public static boolean createFile(String path) {
+     static boolean createFile(String path) {
         if (!isSDMounted()) {
             DevLog.w("sdcard is not mount!");
             return false;

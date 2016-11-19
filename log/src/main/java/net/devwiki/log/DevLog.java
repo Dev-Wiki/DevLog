@@ -9,11 +9,10 @@ import android.content.Context;
  */
 public class DevLog {
 
-    public static final String DEFAULT_SAVE_PATH = "";
-    public static final String DEFAULT_SAVE_DIR = "";
-    public static final String HEAD_LINE = "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
-    public static final String START_LINE = "┃  ";
-    public static final String FOOT_LINE = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+    private static final String DEFAULT_SAVE_PATH = "";
+    static final String HEAD_LINE = "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+    static final String START_LINE = "┃  ";
+    static final String FOOT_LINE = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
 
     /**
      * 日志级别
@@ -331,16 +330,12 @@ public class DevLog {
     private static String[] getLogInfo(String tag, String msg) {
         StackTraceElement[] elements = Thread.currentThread().getStackTrace();
         StackTraceElement targetElement = elements[4];
-        String className = targetElement.getClassName();
-        int index = className.lastIndexOf(".");
-        if (index >= 0) {
-            className = className.substring(index + 1);
-        }
+        String fileName = targetElement.getFileName();
         String methodName = targetElement.getMethodName();
         int lineNumber = targetElement.getLineNumber();
-        String location = "[" + className + "#" + methodName + ":" + lineNumber + "]";
+        String location = "[ (" + fileName + ":" + lineNumber + ")#" + methodName + " ]";
         String[] logInfo = new String[3];
-        logInfo[0] = tag == null ? className : tag;
+        logInfo[0] = tag == null ? fileName : tag;
         logInfo[1] = location;
         logInfo[2] = msg == null ? "" : msg;
         return logInfo;
