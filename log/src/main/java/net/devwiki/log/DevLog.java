@@ -51,6 +51,7 @@ public class DevLog {
     /**
      * 初始化日志类
      *
+     * @param context App的上下文
      * @param logLevel  日志在Logcat输出的级别,参见{@link DevLog#setLogLevel(int)}
      * @param saveLevel 保存到文件的日志级别,参见{@link DevLog#setSaveLevel(int)}
      * @param savePath  日志文件保存路径,设置为绝对路径,默认保存在{@link DevLog#DEFAULT_SAVE_PATH}

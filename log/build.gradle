@@ -10,7 +10,7 @@ ext {
     artifact = 'log'
     libraryName = 'log'
 
-    libraryVersion = '0.0.1'
+    libraryVersion = '0.0.2'
     libraryDescription = 'Android Develop Log Util'
 
     siteUrl = 'https://github.com/Dev-Wiki/DevLog'
