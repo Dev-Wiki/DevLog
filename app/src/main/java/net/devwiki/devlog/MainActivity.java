@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.socks.library.KLog;
-
 import net.devwiki.log.DevLog;
 
 import org.json.JSONArray;
@@ -74,10 +72,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void printDLog() {
-        DevLog.d();
-        DevLog.d("this is a d message!");
-        DevLog.d(TAG, "this is a d message");
-
+        for (int i = 0; i < 100000; i++) {
+            DevLog.d(String.valueOf(i));
+            DevLog.d("this is a d message!");
+            DevLog.d(TAG, "this is a d message");
+        }
 //        printStackInfo("MainActivity#printDLog", Thread.currentThread().getStackTrace());
         threadPrint();
         Inner inner = new Inner();
@@ -131,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 DevLog.d("MainActivity#threadPrint");
-                KLog.d(TAG, "KLog");
             }
         }.start();
     }
@@ -140,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         public void print() {
             DevLog.d("MainActivity.Inner#print");
-            KLog.d(TAG, "KLog");
         }
 
         public void threadPrint() {
@@ -148,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void run() {
                     DevLog.d("MainActivity.Inner#threadPrint");
-                    KLog.d(TAG, "KLog");
                 }
             }.start();
         }
